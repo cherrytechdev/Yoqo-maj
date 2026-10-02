@@ -1,4 +1,5 @@
 import React from 'react'
+import { ButtonLink } from './ui/button'
 
 const licences = [
   { label: 'Payment services', title: 'Payment Intermediary Services' },
@@ -53,6 +54,12 @@ export const Regulation: React.FC = () => {
           Services depend on the relevant licence conditions, partner approvals and contractual
           arrangements. A financial-services licence does not imply a banking or custody licence.
         </p>
+
+        <div className="mt-10 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
+          <ButtonLink href="#contact" size="lg" className="w-full sm:w-auto">
+            Talk to us
+          </ButtonLink>
+        </div>
       </div>
     </section>
   )

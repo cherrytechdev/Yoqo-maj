@@ -1,4 +1,5 @@
 import React, { useRef } from 'react'
+import { FeatureSteps, type Feature } from './ui/feature-section'
 
 type Capability = {
   number: string
@@ -64,26 +65,97 @@ const capabilities: Capability[] = [
   },
 ]
 
-const flow = [
-  { title: 'Merchant checkout', text: 'Website or platform', active: false },
-  { title: 'YOQO gateway', text: 'Routing and controls', active: true },
-  { title: 'Acquirer and card network', text: 'Payment authorisation', active: false },
-  { title: 'Card issuer', text: 'Approval or decline', active: false },
-]
-
-const Arrow: React.FC = () => (
-  <svg
-    className="mx-auto shrink-0 rotate-90 lg:rotate-0"
-    width="44"
-    height="10"
-    viewBox="0 0 44 10"
-    fill="none"
-    aria-hidden="true"
-  >
-    <line x1="0" y1="5" x2="38" y2="5" stroke="#0ea5d9" strokeWidth="1.5" />
-    <polygon points="38,1.5 44,5 38,8.5" fill="#0ea5d9" />
+const Visual: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <svg viewBox="0 0 320 200" fill="none" className="h-full w-full" aria-hidden="true">
+    {children}
   </svg>
 )
+
+const stroke = '#0b2a3d'
+const line = '#c9d8e4'
+const accent = '#0ea5d9'
+
+const flow: Feature[] = [
+  {
+    step: 'Step 01',
+    title: 'Merchant checkout',
+    content: 'Your customer pays by card on your website, app or platform.',
+    visual: (
+      <Visual>
+        <rect x="26" y="28" width="268" height="144" rx="14" fill="#ffffff" stroke={line} strokeWidth="2" />
+        <path d="M26 62h268" stroke={line} strokeWidth="2" />
+        <circle cx="46" cy="45" r="4" fill="#d9e5ee" />
+        <circle cx="60" cy="45" r="4" fill="#d9e5ee" />
+        <circle cx="74" cy="45" r="4" fill="#d9e5ee" />
+        <rect x="52" y="82" width="124" height="72" rx="9" fill="#f3f6f9" stroke={stroke} strokeWidth="2" />
+        <path d="M52 102h124" stroke={stroke} strokeWidth="2" />
+        <path d="M68 138h44" stroke="#5d7284" strokeWidth="2" strokeLinecap="round" />
+        <rect x="200" y="92" width="76" height="26" rx="13" fill={accent} />
+        <path d="M216 105h44" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" />
+        <path d="M200 134h76" stroke="#5d7284" strokeWidth="2" strokeLinecap="round" opacity="0.45" />
+      </Visual>
+    ),
+  },
+  {
+    step: 'Step 02',
+    title: 'YOQO gateway',
+    content: 'Routing, fraud screening and transaction controls in one integration.',
+    visual: (
+      <Visual>
+        <path d="M124 100H92" stroke={line} strokeWidth="2" strokeLinecap="round" />
+        <path d="M196 100h32" stroke={line} strokeWidth="2" strokeLinecap="round" />
+        <path d="M124 100l-8-5v10l8-5Z" fill={line} />
+        <path d="M196 100l8-5v10l-8-5Z" fill={line} />
+        <rect x="32" y="80" width="60" height="40" rx="10" fill="#ffffff" stroke={line} strokeWidth="2" />
+        <path d="M44 100h36" stroke="#5d7284" strokeWidth="2" strokeLinecap="round" />
+        <rect x="228" y="80" width="60" height="40" rx="10" fill="#ffffff" stroke={line} strokeWidth="2" />
+        <path d="M240 100h36" stroke="#5d7284" strokeWidth="2" strokeLinecap="round" />
+        <rect x="124" y="60" width="72" height="80" rx="18" fill="#1f3d4f" />
+        <path d="M138 88c14 0 14 24 28 24" stroke={accent} strokeWidth="2.5" strokeLinecap="round" />
+        <path d="M138 112c14 0 14-24 28-24" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" />
+        <circle cx="182" cy="88" r="4" fill={accent} />
+        <circle cx="182" cy="112" r="4" fill="#ffffff" />
+        <rect x="26" y="156" width="268" height="1.5" fill={line} />
+      </Visual>
+    ),
+  },
+  {
+    step: 'Step 03',
+    title: 'Acquirer and card network',
+    content: 'The acquiring bank forwards the request to Visa or Mastercard.',
+    visual: (
+      <Visual>
+        <circle cx="160" cy="96" r="52" fill="#ffffff" stroke={line} strokeWidth="2" />
+        <ellipse cx="160" cy="96" rx="20" ry="52" stroke={line} strokeWidth="2" />
+        <path d="M108 96h104" stroke={line} strokeWidth="2" />
+        <path d="M118 68c26 14 58 14 84 0" stroke={line} strokeWidth="2" strokeLinecap="round" />
+        <path d="M118 124c26-14 58-14 84 0" stroke={line} strokeWidth="2" strokeLinecap="round" />
+        <circle cx="160" cy="96" r="6" fill={accent} />
+        <circle cx="72" cy="150" r="7" fill="#ffffff" stroke={stroke} strokeWidth="2" />
+        <circle cx="248" cy="150" r="7" fill="#ffffff" stroke={stroke} strokeWidth="2" />
+        <path d="M86 146l68-46" stroke={accent} strokeWidth="2" strokeLinecap="round" />
+        <path d="M234 146l-68-46" stroke={accent} strokeWidth="2" strokeLinecap="round" />
+      </Visual>
+    ),
+  },
+  {
+    step: 'Step 04',
+    title: 'Card issuer',
+    content: 'The issuing bank approves or declines the transaction in real time.',
+    visual: (
+      <Visual>
+        <rect x="46" y="52" width="176" height="112" rx="14" fill="#ffffff" stroke={stroke} strokeWidth="2" />
+        <path d="M46 84h176" stroke={stroke} strokeWidth="2" />
+        <rect x="64" y="100" width="30" height="22" rx="5" fill="#e6eff6" stroke="#5d7284" strokeWidth="1.5" />
+        <path d="M64 111h30" stroke="#5d7284" strokeWidth="1.5" />
+        <path d="M110 106h56" stroke="#5d7284" strokeWidth="2" strokeLinecap="round" />
+        <path d="M110 122h36" stroke="#c9d8e4" strokeWidth="2" strokeLinecap="round" />
+        <circle cx="232" cy="136" r="26" fill={accent} />
+        <path d="M221 136l8 9 16-19" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+      </Visual>
+    ),
+  },
+]
 
 const TiltCard: React.FC<{ c: Capability }> = ({ c }) => {
   const ref = useRef<HTMLElement>(null)
@@ -161,7 +233,7 @@ export const Solutions: React.FC = () => {
         </div>
 
         {/* Bloc gateway */}
-        <div className="mt-10 rounded-3xl border border-[#d9e5ee] bg-white/90 p-8 sm:p-10">
+        <div className="mt-10 rounded-3xl border border-[#d9e5ee] bg-white/90 p-6 sm:p-8 md:p-10">
           <h3 className="text-2xl sm:text-[28px] font-bold tracking-tight text-[#0b2a3d]">
             A gateway built around your business
           </h3>
@@ -169,24 +241,8 @@ export const Solutions: React.FC = () => {
             Connect your checkout to card-payment processing through a secure, branded integration.
           </p>
 
-          <div className="mt-8 flex flex-col items-stretch gap-3 lg:flex-row lg:items-center">
-            {flow.map((step, i) => (
-              <React.Fragment key={step.title}>
-                <div
-                  className={`flex-1 rounded-xl border px-5 py-5 ${
-                    step.active
-                      ? 'border-[#1f3d4f] bg-[#1f3d4f] text-white'
-                      : 'border-[#d9e5ee] bg-[#f3f6f9] text-[#0b2a3d]'
-                  }`}
-                >
-                  <p className="text-base font-bold leading-snug">{step.title}</p>
-                  <p className={`mt-2 text-sm ${step.active ? 'text-white/70' : 'text-[#5d7284]'}`}>
-                    {step.text}
-                  </p>
-                </div>
-                {i < flow.length - 1 && <Arrow />}
-              </React.Fragment>
-            ))}
+          <div className="mt-8">
+            <FeatureSteps features={flow} autoPlayInterval={4000} />
           </div>
 
           <p className="mt-6 text-sm text-[#5d7284]">

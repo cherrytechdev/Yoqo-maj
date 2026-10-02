@@ -32,7 +32,8 @@ const details = [
 export const About: React.FC = () => {
   return (
     <section
-      className="relative w-full overflow-hidden px-6 sm:px-12 md:px-20 lg:px-28 py-20 sm:py-28"
+      id="about"
+      className="relative w-full overflow-hidden px-6 sm:px-12 md:px-20 lg:px-28 py-20 sm:py-28 scroll-mt-28"
       style={{
         background:
           'radial-gradient(ellipse 40% 50% at 0% 0%, rgba(186, 225, 245, 0.35) 0%, transparent 70%), linear-gradient(180deg, #f8fbfd 0%, #eef4f8 100%)',
@@ -61,7 +62,7 @@ export const About: React.FC = () => {
           viewport={{ once: true, amount: 0.3 }}
           className="lg:pr-20"
         >
-          <h2 className="text-4xl sm:text-5xl font-extrabold leading-[1.1] tracking-tight text-[#082a40]">
+          <h2 className="text-4xl sm:text-6xl font-extrabold leading-[1.1] tracking-tight text-[#082a40]">
             <span className="block overflow-hidden pb-1">
               <motion.span variants={lineUp} className="block">
                 Payment expertise. A

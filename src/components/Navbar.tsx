@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Home, Layers, Settings, ShieldCheck, CreditCard, Scale } from 'lucide-react'
+import { ButtonLink } from './ui/button'
 
 const navItems = [
   { name: 'Home', url: '#home', icon: Home },
@@ -93,12 +94,9 @@ export const Navbar: React.FC = () => {
         </div>
 
         {/* Bouton Contact */}
-        <a
-          href="#contact"
-          className="shrink-0 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 px-4 py-2 text-xs font-bold text-[#03131b] shadow-[0_0_20px_rgba(14,165,217,0.45)] transition-transform hover:scale-105 sm:px-5 sm:py-2.5 sm:text-sm"
-        >
+        <ButtonLink href="#contact" size="sm" className="shrink-0 sm:px-5 sm:py-2.5 sm:text-sm">
           Contact us
-        </a>
+        </ButtonLink>
       </nav>
     </header>
   )

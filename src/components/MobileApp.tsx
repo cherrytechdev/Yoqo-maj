@@ -22,7 +22,8 @@ const Check: React.FC = () => (
 export const MobileApp: React.FC = () => {
   return (
     <section
-      className="relative w-full overflow-hidden px-6 sm:px-12 md:px-20 lg:px-28 py-20 sm:py-28"
+      id="mobile-app"
+      className="relative w-full overflow-hidden px-6 sm:px-12 md:px-20 lg:px-28 py-20 sm:py-28 scroll-mt-28"
       style={{
         background:
           'radial-gradient(ellipse 40% 50% at 100% 30%, rgba(200, 224, 240, 0.55) 0%, transparent 70%), linear-gradient(180deg, #eef4f8 0%, #f4f8fb 100%)',

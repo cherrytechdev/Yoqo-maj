@@ -140,7 +140,7 @@ export const Contact: React.FC = () => {
   return (
     <section
       id="contact"
-      className="relative flex min-h-screen w-full flex-col overflow-hidden"
+      className="relative w-full overflow-hidden px-6 sm:px-12 md:px-20 lg:px-28 py-20 sm:py-28 scroll-mt-28"
       style={{ background: '#03111a' }}
     >
       {/* Halos lumineux qui flottent */}
@@ -169,7 +169,7 @@ export const Contact: React.FC = () => {
         />
       ))}
 
-      <div className="relative z-10 grid flex-1 items-center gap-10 px-6 pb-12 pt-28 sm:gap-14 sm:pb-16 sm:pt-36 sm:px-12 md:grid-cols-2 md:px-20 lg:px-28">
+      <div className="relative z-10 mx-auto grid max-w-6xl items-center gap-10 sm:gap-14 md:grid-cols-2">
         {/* Colonne gauche */}
         <motion.div
           variants={container}
@@ -231,17 +231,6 @@ export const Contact: React.FC = () => {
           <InfoCard />
         </div>
       </div>
-
-      {/* Pied de page */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1, delay: 0.4 }}
-        className="relative z-10 bg-black/25 px-6 pb-24 pt-6 text-xs text-white/50 sm:px-12 md:px-20 md:pb-6 lg:px-28"
-      >
-        <div>YOQO Payment Systems Ltd. Mauritius.</div>
-      </motion.div>
     </section>
   )
 }

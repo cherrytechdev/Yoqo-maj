@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react'
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
+import { ButtonLink } from './ui/button'
 
 const steps = [
   { n: '1', title: 'Define', text: 'Markets, payment methods, expected activity and settlement needs.' },
@@ -104,7 +105,8 @@ const CardFan: React.FC = () => {
 export const Launch: React.FC = () => {
   return (
     <section
-      className="relative w-full overflow-hidden px-6 sm:px-12 md:px-20 lg:px-28 py-20 sm:py-28"
+      id="launch"
+      className="relative w-full overflow-hidden px-6 sm:px-12 md:px-20 lg:px-28 py-20 sm:py-28 scroll-mt-28"
       style={{ background: 'linear-gradient(180deg, #e9f1f7 0%, #f8fbfd 100%)' }}
     >
       <div className="mx-auto max-w-6xl">
@@ -125,6 +127,12 @@ export const Launch: React.FC = () => {
           {steps.map((s) => (
             <TiltCard key={s.n} s={s} />
           ))}
+        </div>
+
+        <div className="mt-12 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
+          <ButtonLink href="#contact" size="lg" className="w-full sm:w-auto">
+            Talk to us
+          </ButtonLink>
         </div>
       </div>
     </section>

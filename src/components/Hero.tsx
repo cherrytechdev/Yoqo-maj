@@ -1,4 +1,6 @@
 import React from 'react'
+import { ArrowRight } from 'lucide-react'
+import { ButtonLink } from './ui/button'
 
 export const Hero: React.FC = () => {
   return (
@@ -20,12 +22,25 @@ export const Hero: React.FC = () => {
         <p className="animate-slide-in-left-delay text-slate-200 text-lg sm:text-2xl md:text-[27px] font-normal max-w-2xl leading-relaxed tracking-wide font-montserrat opacity-90">
           Payment acceptance. Prepaid cards. Virtual-asset capabilities.
         </p>
-      </div>
 
-      {/* Footer / Badge Row */}
-      <div className="relative z-10 pt-16 sm:pt-20">
-        <div className="inline-flex items-center px-4 py-2 rounded-full glass-pill text-slate-300 text-xs sm:text-sm font-medium tracking-wide shadow-lg border border-white/15">
-          <span className="font-montserrat">Based in Mauritius</span>
+        <div className="animate-slide-in-left-delay-2 mt-10 flex flex-col items-stretch gap-3 sm:mt-12 sm:flex-row sm:items-center sm:gap-4">
+          <ButtonLink href="#contact" size="lg" className="w-full sm:w-auto">
+            Talk to us
+          </ButtonLink>
+
+          <ButtonLink
+            href="#solutions"
+            variant="secondary"
+            size="lg"
+            className="group w-full text-white sm:w-auto"
+          >
+            Explore solutions
+            <ArrowRight
+              size={18}
+              strokeWidth={2.5}
+              className="transition-transform duration-300 group-hover:translate-x-1"
+            />
+          </ButtonLink>
         </div>
       </div>
     </section>

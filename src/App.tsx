@@ -10,6 +10,7 @@ import { Infrastructure } from './components/Infrastructure';
 import { Launch } from './components/Launch';
 import { Regulation } from './components/Regulation';
 import { Contact } from './components/Contact';
+import { Footer } from './components/Footer';
 import { Reveal } from './animations/Reveal';
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
         <Reveal direction="zoom"><Regulation /></Reveal>
         <Reveal direction="up"><Contact /></Reveal>
       </main>
+      <Footer />
     </div>
   )
 }

@@ -38,7 +38,8 @@ const rows: { label: string; items: Item[] }[] = [
 export const Infrastructure: React.FC = () => {
   return (
     <section
-      className="relative w-full overflow-hidden px-6 sm:px-12 md:px-20 lg:px-28 py-20 sm:py-28"
+      id="infrastructure"
+      className="relative w-full overflow-hidden px-6 sm:px-12 md:px-20 lg:px-28 py-20 sm:py-28 scroll-mt-28"
       style={{ background: 'linear-gradient(180deg, #f4f8fb 0%, #e9f1f7 100%)' }}
     >
       <div className="mx-auto max-w-6xl">
