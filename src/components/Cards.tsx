@@ -1,42 +1,33 @@
-import React, { useRef } from 'react'
-import { motion, useMotionTemplate, useMotionValue, useSpring, useTransform } from 'framer-motion'
+import React, { useRef, useState } from 'react'
+import { Reveal } from '../animations/Reveal'
 
 const CARD_SRC = '/cards.png' // ← garde le nom réel de ton image dans public/
-
-const ease = [0.22, 1, 0.36, 1] as const
 
 /* ---------- Carte 3D : suit la souris, reflet, ombre dynamique, flottement ---------- */
 const Card3D: React.FC = () => {
   const zone = useRef<HTMLDivElement>(null)
-
-  // Position de la souris dans la zone, normalisée entre -1 et 1
-  const mx = useMotionValue(0)
-  const my = useMotionValue(0)
-
-  const springCfg = { stiffness: 140, damping: 16, mass: 0.6 }
-
-  // Au repos la carte est déjà légèrement inclinée (rotateY -12, rotateX 6)
-  const rotateY = useSpring(useTransform(mx, [-1, 1], [-34, 10]), springCfg)
-  const rotateX = useSpring(useTransform(my, [-1, 1], [24, -12]), springCfg)
-
-  // Reflet lumineux qui suit le curseur
-  const gx = useTransform(mx, [-1, 1], [0, 100])
-  const gy = useTransform(my, [-1, 1], [0, 100])
-  const glare = useMotionTemplate`radial-gradient(circle at ${gx}% ${gy}%, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.12) 30%, transparent 60%)`
-
-  // Ombre au sol qui se décale à l'opposé de l'inclinaison
-  const shadowX = useTransform(rotateY, [-34, 10], [40, -20])
-  const shadowScale = useTransform(rotateX, [-12, 24], [0.9, 1.1])
+  const [rotateX, setRotateX] = useState(6)
+  const [rotateY, setRotateY] = useState(-12)
+  const [glarePos, setGlarePos] = useState({ x: 50, y: 50 })
+  const [shadowX, setShadowX] = useState(10)
 
   const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!zone.current) return
     const r = zone.current.getBoundingClientRect()
-    mx.set(((e.clientX - r.left) / r.width) * 2 - 1)
-    my.set(((e.clientY - r.top) / r.height) * 2 - 1)
+    const mx = ((e.clientX - r.left) / r.width) * 2 - 1
+    const my = ((e.clientY - r.top) / r.height) * 2 - 1
+
+    // Au repos la carte est déjà légèrement inclinée (rotateY -12, rotateX 6)
+    setRotateY(-34 + (10 - -34) * ((mx + 1) / 2))
+    setRotateX(24 + (-12 - 24) * ((my + 1) / 2))
+    setGlarePos({ x: (mx + 1) * 50, y: (my + 1) * 50 })
+    setShadowX(40 + (-20 - 40) * ((mx + 1) / 2))
   }
   const onLeave = () => {
-    mx.set(0)
-    my.set(0)
+    setRotateX(6)
+    setRotateY(-12)
+    setGlarePos({ x: 50, y: 50 })
+    setShadowX(10)
   }
 
   return (
@@ -48,30 +39,37 @@ const Card3D: React.FC = () => {
       style={{ perspective: '1400px' }}
     >
       {/* Halo lumineux derrière la carte */}
-      <motion.div
+      <div
         aria-hidden
         className="pointer-events-none absolute h-[380px] w-[380px] rounded-full bg-sky-300/40 blur-[90px]"
-        animate={{ scale: [1, 1.15, 1], opacity: [0.6, 1, 0.6] }}
-        transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+        style={{ animation: 'pulseHalo 6s ease-in-out infinite' }}
       />
 
       {/* Flottement */}
-      <motion.div
-        animate={{ y: [0, -16, 0] }}
-        transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+      <div
         className="relative"
-        style={{ transformStyle: 'preserve-3d' }}
+        style={{
+          transformStyle: 'preserve-3d',
+          animation: 'cardFloat 5s ease-in-out infinite',
+        }}
       >
         {/* Ombre dynamique au sol */}
-        <motion.div
+        <div
           aria-hidden
           className="absolute -bottom-10 left-1/2 h-8 w-[70%] -translate-x-1/2 rounded-[50%] bg-[#0b2a3d]/35 blur-2xl"
-          style={{ x: shadowX, scaleX: shadowScale }}
+          style={{
+            transform: `translateX(${shadowX}px)`,
+            transition: 'transform 0.15s ease-out',
+          }}
         />
 
         {/* La carte */}
-        <motion.div
-          style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
+        <div
+          style={{
+            transform: `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`,
+            transformStyle: 'preserve-3d',
+            transition: 'transform 0.15s ease-out',
+          }}
           className="relative transform-gpu"
         >
           <img
@@ -83,13 +81,17 @@ const Card3D: React.FC = () => {
           />
 
           {/* Reflet qui suit la souris */}
-          <motion.div
+          <div
             aria-hidden
             className="pointer-events-none absolute inset-0 rounded-[6%/4%] mix-blend-soft-light"
-            style={{ background: glare, transform: 'translateZ(60px)' }}
+            style={{
+              background: `radial-gradient(circle at ${glarePos.x}% ${glarePos.y}%, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.12) 30%, transparent 60%)`,
+              transform: 'translateZ(60px)',
+              transition: 'background 0.15s ease-out',
+            }}
           />
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
     </div>
   )
 }
@@ -107,30 +109,24 @@ export const Cards: React.FC = () => {
       <div className="mx-auto grid max-w-7xl items-center gap-8 md:grid-cols-[1fr_1.1fr]">
         {/* Texte */}
         <div>
-          <motion.h2
-            initial={{ opacity: 0, x: -60 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: false, amount: 0.3 }}
-            transition={{ duration: 0.8, ease }}
-            className="text-4xl sm:text-5xl font-bold leading-[1.15] tracking-tight text-[#082a40]"
-          >
-            YOQO Platinum
-          </motion.h2>
+          <Reveal direction="left">
+            <h2 className="text-4xl sm:text-5xl font-bold leading-[1.15] tracking-tight text-[#082a40]">
+              YOQO Platinum
+            </h2>
+          </Reveal>
 
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false, amount: 0.3 }}
-            transition={{ duration: 0.8, delay: 0.15, ease }}
-            className="mt-6 max-w-md text-base sm:text-lg leading-relaxed text-[#5d7284]"
-          >
-            A UnionPay-powered prepaid card for everyday spending and business programs, with
-            branded issuance and full program control.
-          </motion.p>
+          <Reveal direction="left" delay={0.15}>
+            <p className="mt-6 max-w-md text-base sm:text-lg leading-relaxed text-[#5d7284]">
+              A UnionPay-powered prepaid card for everyday spending and business programs, with
+              branded issuance and full program control.
+            </p>
+          </Reveal>
         </div>
 
         {/* Carte 3D */}
-        <Card3D />
+        <Reveal direction="zoom" delay={0.2}>
+          <Card3D />
+        </Reveal>
       </div>
     </section>
   )

@@ -1,30 +1,60 @@
-import React from 'react'
-import { motion, useReducedMotion } from 'framer-motion'
+import React, { useEffect, useRef, useState } from 'react'
 
-type Direction = 'up' | 'left' | 'right' | 'zoom'
+type Direction = 'up' | 'down' | 'left' | 'right' | 'zoom'
 
-const offsets: Record<Direction, { x?: number; y?: number; scale?: number }> = {
-  up: { y: 70 },
-  left: { x: -90 },
-  right: { x: 90 },
-  zoom: { scale: 0.92, y: 30 },
+const offsets: Record<Direction, string> = {
+  up: 'translate(0, 35px)',
+  down: 'translate(0, -35px)',
+  left: 'translate(-40px, 0)',
+  right: 'translate(40px, 0)',
+  zoom: 'translate(0, 15px) scale(0.94)',
 }
 
 export const Reveal: React.FC<{
   children: React.ReactNode
   direction?: Direction
   delay?: number
-}> = ({ children, direction = 'up', delay = 0 }) => {
-  const reduce = useReducedMotion()
+  className?: string
+}> = ({ children, direction = 'up', delay = 0, className = '' }) => {
+  const ref = useRef<HTMLDivElement>(null)
+  const [visible, setVisible] = useState(false)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+
+    // Respect prefers-reduced-motion
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setVisible(true)
+      return
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true)
+          observer.unobserve(el)
+        }
+      },
+      { threshold: 0.2 }
+    )
+
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
 
   return (
-    <motion.div
-      initial={reduce ? false : { opacity: 0, ...offsets[direction] }}
-      whileInView={{ opacity: 1, x: 0, y: 0, scale: 1 }}
-      viewport={{ once: true, amount: 0.15 }}
-      transition={{ duration: 0.9, delay, ease: [0.22, 1, 0.36, 1] }}
+    <div
+      ref={ref}
+      className={className}
+      style={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? 'translate(0, 0) scale(1)' : offsets[direction],
+        transition: `opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1) ${delay}s, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) ${delay}s`,
+        willChange: 'opacity, transform',
+      }}
     >
       {children}
-    </motion.div>
+    </div>
   )
 }

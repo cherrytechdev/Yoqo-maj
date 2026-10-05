@@ -1,4 +1,5 @@
 import React from 'react'
+import { Reveal } from '../animations/Reveal'
 
 const PHONE1_SRC = '/phone1.png' // ← change l'extension si besoin (.jpg, .webp...)
 const PHONE2_SRC = '/phone2.png'
@@ -31,40 +32,43 @@ export const MobileApp: React.FC = () => {
     >
       <div className="mx-auto grid max-w-6xl items-center gap-12 md:grid-cols-2">
         <div>
-          <h2 className="text-3xl sm:text-4xl font-bold leading-[1.15] tracking-tight text-[#082a40]">
-            The YOQO mobile app
-          </h2>
-          <p className="mt-4 text-base text-[#5d7284]">
-            Everyday card control in the cardholder's hands.
-          </p>
+          <Reveal direction="left">
+            <h2 className="text-3xl sm:text-4xl font-bold leading-[1.15] tracking-tight text-[#082a40]">
+              The YOQO mobile app
+            </h2>
+            <p className="mt-4 text-base text-[#5d7284]">
+              Everyday card control in the cardholder's hands.
+            </p>
+          </Reveal>
 
           <ul className="mt-8 max-w-xs space-y-2.5">
-            {features.map((f) => (
-              <li
-                key={f}
-                className="flex items-center gap-3 rounded-lg border border-[#d9e5ee] bg-white/80 px-3 py-2 text-sm text-[#082a40] shadow-sm"
-              >
-                <Check />
-                {f}
-              </li>
+            {features.map((f, index) => (
+              <Reveal key={f} direction="left" delay={0.1 + index * 0.08}>
+                <li className="flex items-center gap-3 rounded-lg border border-[#d9e5ee] bg-white/80 px-3 py-2 text-sm text-[#082a40] shadow-sm">
+                  <Check />
+                  {f}
+                </li>
+              </Reveal>
             ))}
           </ul>
         </div>
 
-        <div className="flex items-center justify-center gap-4 md:justify-end">
-          <img
-            src={PHONE1_SRC}
-            alt="YOQO app - card details"
-            draggable={false}
-            className="mt-10 w-[44%] max-w-[220px] select-none drop-shadow-[0_25px_35px_rgba(11,42,61,0.3)] transition-transform duration-500 hover:-translate-y-2"
-          />
-          <img
-            src={PHONE2_SRC}
-            alt="YOQO app - your cards"
-            draggable={false}
-            className="-mt-6 w-[44%] max-w-[220px] select-none drop-shadow-[0_25px_35px_rgba(11,42,61,0.3)] transition-transform duration-500 hover:-translate-y-2"
-          />
-        </div>
+        <Reveal direction="zoom" delay={0.15}>
+          <div className="flex items-center justify-center gap-4 md:justify-end">
+            <img
+              src={PHONE1_SRC}
+              alt="YOQO app - card details"
+              draggable={false}
+              className="mt-10 w-[44%] max-w-[220px] select-none drop-shadow-[0_25px_35px_rgba(11,42,61,0.3)] transition-transform duration-500 hover:-translate-y-2"
+            />
+            <img
+              src={PHONE2_SRC}
+              alt="YOQO app - your cards"
+              draggable={false}
+              className="-mt-6 w-[44%] max-w-[220px] select-none drop-shadow-[0_25px_35px_rgba(11,42,61,0.3)] transition-transform duration-500 hover:-translate-y-2"
+            />
+          </div>
+        </Reveal>
       </div>
     </section>
   )

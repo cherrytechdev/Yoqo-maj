@@ -1,5 +1,6 @@
 import React, { useRef } from 'react'
 import { FeatureSteps, type Feature } from './ui/feature-section'
+import { Reveal } from '../animations/Reveal'
 
 type Capability = {
   number: string
@@ -221,35 +222,41 @@ export const Solutions: React.FC = () => {
       }}
     >
       <div className="mx-auto max-w-6xl">
-        <h2 className="max-w-2xl text-4xl sm:text-5xl font-bold leading-[1.15] tracking-tight text-[#0b2a3d]">
-          Three capabilities. One commercial relationship.
-        </h2>
+        <Reveal direction="up">
+          <h2 className="max-w-2xl text-4xl sm:text-5xl font-bold leading-[1.15] tracking-tight text-[#0b2a3d]">
+            Three capabilities. One commercial relationship.
+          </h2>
+        </Reveal>
 
         {/* Cartes */}
         <div className="mt-12 grid gap-6 md:grid-cols-3">
-          {capabilities.map((c) => (
-            <TiltCard key={c.number} c={c} />
+          {capabilities.map((c, index) => (
+            <Reveal key={c.number} direction="up" delay={index * 0.15}>
+              <TiltCard c={c} />
+            </Reveal>
           ))}
         </div>
 
         {/* Bloc gateway */}
-        <div className="mt-10 rounded-3xl border border-[#d9e5ee] bg-white/90 p-6 sm:p-8 md:p-10">
-          <h3 className="text-2xl sm:text-[28px] font-bold tracking-tight text-[#0b2a3d]">
-            A gateway built around your business
-          </h3>
-          <p className="mt-4 text-base text-[#5d7284]">
-            Connect your checkout to card-payment processing through a secure, branded integration.
-          </p>
+        <Reveal direction="up" delay={0.2}>
+          <div className="mt-10 rounded-3xl border border-[#d9e5ee] bg-white/90 p-6 sm:p-8 md:p-10">
+            <h3 className="text-2xl sm:text-[28px] font-bold tracking-tight text-[#0b2a3d]">
+              A gateway built around your business
+            </h3>
+            <p className="mt-4 text-base text-[#5d7284]">
+              Connect your checkout to card-payment processing through a secure, branded integration.
+            </p>
 
-          <div className="mt-8">
-            <FeatureSteps features={flow} autoPlayInterval={4000} />
+            <div className="mt-8">
+              <FeatureSteps features={flow} autoPlayInterval={4000} />
+            </div>
+
+            <p className="mt-6 text-sm text-[#5d7284]">
+              After authorisation, capture, reconciliation and settlement follow the agreed acquiring
+              arrangements.
+            </p>
           </div>
-
-          <p className="mt-6 text-sm text-[#5d7284]">
-            After authorisation, capture, reconciliation and settlement follow the agreed acquiring
-            arrangements.
-          </p>
-        </div>
+        </Reveal>
       </div>
     </section>
   )

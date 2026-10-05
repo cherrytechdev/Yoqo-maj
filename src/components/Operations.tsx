@@ -1,4 +1,6 @@
-import React from 'react'
+import React, { useState, useRef, useEffect, useCallback } from 'react'
+import { ChevronDown } from 'lucide-react'
+import { Reveal } from '../animations/Reveal'
 
 const items = [
   {
@@ -19,7 +21,71 @@ const items = [
   },
 ]
 
+const AccordionItem: React.FC<{
+  item: { title: string; text: string }
+  isOpen: boolean
+  onToggle: () => void
+}> = ({ item, isOpen, onToggle }) => {
+  const contentRef = useRef<HTMLDivElement>(null)
+  const [height, setHeight] = useState(0)
+
+  const measure = useCallback(() => {
+    if (contentRef.current) {
+      setHeight(contentRef.current.scrollHeight)
+    }
+  }, [])
+
+  useEffect(() => {
+    measure()
+    window.addEventListener('resize', measure)
+    return () => window.removeEventListener('resize', measure)
+  }, [measure])
+
+  return (
+    <div className="border-b border-[#c8dce6]">
+      <button
+        onClick={onToggle}
+        className="flex w-full items-center justify-between py-5 sm:py-6 text-left cursor-pointer group"
+      >
+        <h3 className="text-lg sm:text-xl font-bold leading-snug tracking-tight text-[#082a40] group-hover:text-[#0ea5d9] transition-colors duration-300">
+          {item.title}
+        </h3>
+        <span
+          className="ml-4 flex-shrink-0 text-[#5d7284] transition-transform duration-[400ms]"
+          style={{
+            transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+            transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)',
+          }}
+        >
+          <ChevronDown size={22} />
+        </span>
+      </button>
+
+      <div
+        className="overflow-hidden transition-all duration-[400ms]"
+        style={{
+          maxHeight: isOpen ? height : 0,
+          opacity: isOpen ? 1 : 0,
+          transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)',
+        }}
+      >
+        <div ref={contentRef}>
+          <p className="pb-6 text-sm sm:text-base leading-relaxed text-[#5d7284] max-w-2xl">
+            {item.text}
+          </p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export const Operations: React.FC = () => {
+  const [openIndex, setOpenIndex] = useState<number | null>(null)
+
+  const toggle = (index: number) => {
+    setOpenIndex(openIndex === index ? null : index)
+  }
+
   return (
     <section
       id="operations"
@@ -30,23 +96,28 @@ export const Operations: React.FC = () => {
       }}
     >
       <div className="mx-auto max-w-6xl">
-        <h2 className="max-w-xl text-4xl sm:text-5xl font-bold leading-[1.15] tracking-tight text-[#082a40]">
-          Support beyond the transaction
-        </h2>
+        <Reveal direction="up">
+          <h2 className="max-w-xl text-4xl sm:text-5xl font-bold leading-[1.15] tracking-tight text-[#082a40]">
+            Support beyond the transaction
+          </h2>
+        </Reveal>
 
-        <p className="mt-8 max-w-xl text-base sm:text-lg leading-relaxed text-[#5d7284]">
-          Technology works best with an operating model that supports the merchant every day, from
-          onboarding to settlement.
-        </p>
+        <Reveal direction="up" delay={0.1}>
+          <p className="mt-8 max-w-xl text-base sm:text-lg leading-relaxed text-[#5d7284]">
+            Technology works best with an operating model that supports the merchant every day, from
+            onboarding to settlement.
+          </p>
+        </Reveal>
 
-        <div className="mt-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
-          {items.map((item) => (
-            <div key={item.title} className="border-t-2 border-[#0ea5d9] pt-6">
-              <h3 className="text-xl font-bold leading-snug tracking-tight text-[#082a40]">
-                {item.title}
-              </h3>
-              <p className="mt-4 text-sm leading-relaxed text-[#5d7284]">{item.text}</p>
-            </div>
+        <div className="mt-14 max-w-3xl border-t border-[#c8dce6]">
+          {items.map((item, index) => (
+            <Reveal key={item.title} direction="up" delay={index * 0.08}>
+              <AccordionItem
+                item={item}
+                isOpen={openIndex === index}
+                onToggle={() => toggle(index)}
+              />
+            </Reveal>
           ))}
         </div>
       </div>

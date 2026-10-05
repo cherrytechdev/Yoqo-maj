@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
 import { Home, Layers, Settings, ShieldCheck, CreditCard, Scale } from 'lucide-react'
 import { ButtonLink } from './ui/button'
 
@@ -41,11 +40,10 @@ export const Navbar: React.FC = () => {
   }, [])
 
   return (
-    // Pas de transform ni de backdrop-filter sur le header/nav en mobile :
-    // sinon la barre d'icônes "fixed" serait piégée dans la navbar.
+    
     <header className="fixed inset-x-0 top-0 z-50 flex justify-center px-3 pt-3 sm:px-4 sm:pt-5">
       <nav className="flex w-full max-w-6xl items-center justify-between rounded-full border border-white/10 bg-[#0b1220]/85 px-3 py-2 shadow-lg md:bg-[#0b1220]/70 md:px-4 md:backdrop-blur-lg">
-        {/* Logo : simple image, aucun lien */}
+        
         <img
           src="/Yoqo-icon.png"
           alt="YOQO"
@@ -53,7 +51,7 @@ export const Navbar: React.FC = () => {
           draggable={false}
         />
 
-        {/* Liens : barre flottante en bas sur mobile, centrée dans la navbar sur ordinateur */}
+        
         <div className="fixed bottom-4 left-1/2 z-50 flex -translate-x-1/2 items-center gap-0.5 rounded-full border border-white/10 bg-[#0b1220]/85 p-1 shadow-xl backdrop-blur-lg md:static md:translate-x-0 md:gap-1 md:border-0 md:bg-transparent md:p-0 md:shadow-none md:backdrop-blur-none">
           {navItems.map((item) => {
             const Icon = item.icon
@@ -75,18 +73,15 @@ export const Navbar: React.FC = () => {
                 </span>
 
                 {isActive && (
-                  <motion.div
-                    layoutId="lamp"
-                    className="absolute inset-0 -z-10 w-full rounded-full bg-cyan-400/5"
-                    initial={false}
-                    transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                  <div
+                    className="absolute inset-0 -z-10 w-full rounded-full bg-cyan-400/5 transition-all duration-300"
                   >
                     <div className="absolute -top-2 left-1/2 h-1 w-8 -translate-x-1/2 rounded-t-full bg-cyan-400">
                       <div className="absolute -left-2 -top-2 h-6 w-12 rounded-full bg-cyan-400/20 blur-md" />
                       <div className="absolute -top-1 h-6 w-8 rounded-full bg-cyan-400/20 blur-md" />
                       <div className="absolute left-2 top-0 h-4 w-4 rounded-full bg-cyan-400/20 blur-sm" />
                     </div>
-                  </motion.div>
+                  </div>
                 )}
               </a>
             )

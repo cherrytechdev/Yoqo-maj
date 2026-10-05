@@ -10,8 +10,7 @@ import { Infrastructure } from './components/Infrastructure';
 import { Launch } from './components/Launch';
 import { Regulation } from './components/Regulation';
 import { Contact } from './components/Contact';
-import { Footer } from './components/Footer';
-import { Reveal } from './animations/Reveal';
+import { Footer } from './components/Footer'
 
 function App() {
   return (
@@ -19,16 +18,16 @@ function App() {
       <Navbar />
       <main className="flex-grow">
         <Hero />
-        <Reveal direction="up"><About /></Reveal>
-        <Reveal direction="left"><Solutions /></Reveal>
-        <Reveal direction="up"><Operations /></Reveal>
-        <Reveal direction="right"><Security /></Reveal>
-        <Reveal direction="zoom"><Cards /></Reveal>
-        <Reveal direction="up"><MobileApp /></Reveal>
-        <Reveal direction="left"><Infrastructure /></Reveal>
-        <Reveal direction="up"><Launch /></Reveal>
-        <Reveal direction="zoom"><Regulation /></Reveal>
-        <Reveal direction="up"><Contact /></Reveal>
+        <About />
+        <Solutions />
+        <Operations />
+        <Security />
+        <Cards />
+        <MobileApp />
+        <Infrastructure />
+        <Launch />
+        <Regulation />
+        <Contact />
       </main>
       <Footer />
     </div>

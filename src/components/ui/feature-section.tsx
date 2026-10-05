@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { Check } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -26,12 +25,13 @@ export function FeatureSteps({
   autoPlayInterval = 3000,
   imageHeight = 'h-[200px] md:h-[300px] lg:h-[400px]',
 }: FeatureStepsProps) {
-  const reduce = useReducedMotion()
   const [currentFeature, setCurrentFeature] = useState(0)
   const [progress, setProgress] = useState(0)
   const [paused, setPaused] = useState(false)
   const progressRef = useRef(0)
+  const [transitioning, setTransitioning] = useState(false)
 
+  const reduce = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
   const steps = features.length
   const autoPlay = !reduce && !paused && steps > 1
 
@@ -43,6 +43,8 @@ export function FeatureSteps({
       if (progressRef.current >= 100) {
         progressRef.current = 0
         setCurrentFeature((prev) => (prev + 1) % steps)
+        setTransitioning(true)
+        setTimeout(() => setTransitioning(false), 50)
       }
       setProgress(progressRef.current)
     }, TICK_MS)
@@ -53,7 +55,11 @@ export function FeatureSteps({
   const select = (index: number) => {
     progressRef.current = 0
     setProgress(0)
-    setCurrentFeature(index)
+    setTransitioning(true)
+    setTimeout(() => {
+      setCurrentFeature(index)
+      setTransitioning(false)
+    }, 250)
   }
 
   const active = features[currentFeature]
@@ -65,11 +71,12 @@ export function FeatureSteps({
       onMouseLeave={() => setPaused(false)}
     >
       <div className="mb-6 h-1 w-full overflow-hidden rounded-full bg-[#d9e5ee]">
-        <motion.div
-          className="h-full rounded-full bg-[#0ea5d9]"
-          style={{ originX: 0 }}
-          animate={{ scaleX: steps > 1 ? progress / 100 : 0 }}
-          transition={{ duration: 0.1, ease: 'linear' }}
+        <div
+          className="h-full rounded-full bg-[#0ea5d9] origin-left"
+          style={{
+            transform: `scaleX(${steps > 1 ? progress / 100 : 0})`,
+            transition: 'transform 0.1s linear',
+          }}
         />
       </div>
 
@@ -87,26 +94,22 @@ export function FeatureSteps({
                 aria-current={isActive}
                 className="group flex w-full items-start gap-4 rounded-2xl border border-transparent p-3 text-left transition-colors duration-500 hover:border-[#d9e5ee] hover:bg-white/70 focus-visible:border-[#0ea5d9] focus-visible:outline-none md:gap-5 md:p-4"
               >
-                <motion.span
+                <span
                   className={cn(
-                    'flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 text-base font-bold transition-colors duration-500 md:h-11 md:w-11',
+                    'flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 text-base font-bold transition-all duration-400 md:h-11 md:w-11',
                     isActive
-                      ? 'border-[#1f3d4f] bg-[#1f3d4f] text-white'
+                      ? 'border-[#1f3d4f] bg-[#1f3d4f] text-white scale-105'
                       : isDone
-                        ? 'border-[#0ea5d9] bg-[#0ea5d9] text-white'
-                        : 'border-[#d9e5ee] bg-white text-[#5d7284]'
+                        ? 'border-[#0ea5d9] bg-[#0ea5d9] text-white scale-100'
+                        : 'border-[#d9e5ee] bg-white text-[#5d7284] scale-100'
                   )}
-                  animate={{ scale: isActive && !reduce ? 1.08 : 1 }}
-                  transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                 >
                   {isDone ? <Check size={18} strokeWidth={3} /> : index + 1}
-                </motion.span>
+                </span>
 
-                <motion.div
-                  className="min-w-0 flex-1"
-                  initial={false}
-                  animate={{ opacity: isActive ? 1 : 0.5 }}
-                  transition={{ duration: 0.5 }}
+                <div
+                  className="min-w-0 flex-1 transition-opacity duration-500"
+                  style={{ opacity: isActive ? 1 : 0.5 }}
                 >
                   <p className="text-[11px] font-bold tracking-[0.18em] text-[#0ea5d9] uppercase">
                     {feature.step}
@@ -117,7 +120,7 @@ export function FeatureSteps({
                   <p className="mt-1 text-sm leading-relaxed text-[#5d7284] md:text-base">
                     {feature.content}
                   </p>
-                </motion.div>
+                </div>
               </button>
             )
           })}
@@ -133,24 +136,24 @@ export function FeatureSteps({
             perspective: 1200,
           }}
         >
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentFeature}
-              className="absolute inset-0 flex items-center justify-center p-6 md:p-8"
-              initial={reduce ? { opacity: 0 } : { opacity: 0, y: 40, rotateX: -20 }}
-              animate={reduce ? { opacity: 1 } : { opacity: 1, y: 0, rotateX: 0 }}
-              exit={reduce ? { opacity: 0 } : { opacity: 0, y: -40, rotateX: 20 }}
-              transition={{ duration: 0.5, ease: 'easeInOut' }}
-            >
-              {active.visual ?? (
-                <img
-                  src={active.image}
-                  alt={active.step}
-                  className="h-full w-full object-cover"
-                />
-              )}
-            </motion.div>
-          </AnimatePresence>
+          <div
+            className="absolute inset-0 flex items-center justify-center p-6 md:p-8"
+            style={{
+              opacity: transitioning ? 0 : 1,
+              transform: transitioning
+                ? (reduce ? 'none' : 'translateY(-40px) rotateX(20deg)')
+                : 'translateY(0) rotateX(0)',
+              transition: 'opacity 0.5s ease-in-out, transform 0.5s ease-in-out',
+            }}
+          >
+            {active.visual ?? (
+              <img
+                src={active.image}
+                alt={active.step}
+                className="h-full w-full object-cover"
+              />
+            )}
+          </div>
 
           <div className="pointer-events-none absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-[#eef4f8] via-[#eef4f8]/40 to-transparent p-5 md:p-7">
             <p className="text-[11px] font-semibold tracking-[0.18em] text-[#0ea5d9] uppercase">
