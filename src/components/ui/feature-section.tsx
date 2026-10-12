@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Check } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { Step3DViewer } from './Step3DViewer'
 
 export interface Feature {
   step: string
@@ -8,6 +9,7 @@ export interface Feature {
   content: string
   visual?: React.ReactNode
   image?: string
+  poster?: string
 }
 
 export interface FeatureStepsProps {
@@ -29,9 +31,10 @@ export function FeatureSteps({
   const [progress, setProgress] = useState(0)
   const [paused, setPaused] = useState(false)
   const progressRef = useRef(0)
-  const [transitioning, setTransitioning] = useState(false)
 
-  const reduce = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  const reduce =
+    typeof window !== 'undefined' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
   const steps = features.length
   const autoPlay = !reduce && !paused && steps > 1
 
@@ -43,8 +46,6 @@ export function FeatureSteps({
       if (progressRef.current >= 100) {
         progressRef.current = 0
         setCurrentFeature((prev) => (prev + 1) % steps)
-        setTransitioning(true)
-        setTimeout(() => setTransitioning(false), 50)
       }
       setProgress(progressRef.current)
     }, TICK_MS)
@@ -55,14 +56,8 @@ export function FeatureSteps({
   const select = (index: number) => {
     progressRef.current = 0
     setProgress(0)
-    setTransitioning(true)
-    setTimeout(() => {
-      setCurrentFeature(index)
-      setTransitioning(false)
-    }, 250)
+    setCurrentFeature(index)
   }
-
-  const active = features[currentFeature]
 
   return (
     <div
@@ -70,6 +65,7 @@ export function FeatureSteps({
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
+      {/* Progress bar */}
       <div className="mb-6 h-1 w-full overflow-hidden rounded-full bg-[#d9e5ee]">
         <div
           className="h-full rounded-full bg-[#0ea5d9] origin-left"
@@ -81,6 +77,7 @@ export function FeatureSteps({
       </div>
 
       <div className="flex flex-col gap-6 md:grid md:grid-cols-2 md:items-center md:gap-10">
+        {/* Steps list — left column */}
         <div className="order-2 space-y-4 md:order-1">
           {features.map((feature, index) => {
             const isActive = index === currentFeature
@@ -91,8 +88,8 @@ export function FeatureSteps({
                 key={feature.step}
                 type="button"
                 onClick={() => select(index)}
-                aria-current={isActive}
-                className="group flex w-full items-start gap-4 rounded-2xl border border-transparent p-3 text-left transition-colors duration-500 hover:border-[#d9e5ee] hover:bg-white/70 focus-visible:border-[#0ea5d9] focus-visible:outline-none md:gap-5 md:p-4"
+                aria-current={isActive ? true : undefined}
+                className="group flex w-full items-start gap-4 rounded-2xl border border-transparent p-3 text-left transition-colors duration-500 hover:border-[#d9e5ee] hover:bg-white/70 focus-visible:border-[#0ea5d9] focus-visible:outline-none md:gap-5 md:p-4 cursor-pointer"
               >
                 <span
                   className={cn(
@@ -126,40 +123,93 @@ export function FeatureSteps({
           })}
         </div>
 
+        {/* Sliding visual panel — right column */}
         <div
           className={cn(
-            'relative order-1 overflow-hidden rounded-3xl border border-[#d9e5ee] md:order-2',
+            'relative order-1 overflow-hidden rounded-3xl border border-[#1e2a30] md:order-2',
             imageHeight
           )}
           style={{
-            background: 'linear-gradient(140deg, #f7fafc 0%, #e6eff6 100%)',
-            perspective: 1200,
+            background: '#b1bfc7',
           }}
         >
+          {/*
+           * The strip is `steps` times wider than the container.
+           * Translating it by -(currentFeature / steps * 100)% reveals the active slide.
+           */}
           <div
-            className="absolute inset-0 flex items-center justify-center p-6 md:p-8"
             style={{
-              opacity: transitioning ? 0 : 1,
-              transform: transitioning
-                ? (reduce ? 'none' : 'translateY(-40px) rotateX(20deg)')
-                : 'translateY(0) rotateX(0)',
-              transition: 'opacity 0.5s ease-in-out, transform 0.5s ease-in-out',
+              display: 'flex',
+              width: `${steps * 100}%`,
+              height: '100%',
+              transform: `translateX(${-(currentFeature * (100 / steps))}%)`,
+              transition: reduce
+                ? 'none'
+                : 'transform 0.55s cubic-bezier(0.45, 0, 0.15, 1)',
             }}
           >
-            {active.visual ?? (
-              <img
-                src={active.image}
-                alt={active.step}
-                className="h-full w-full object-cover"
-              />
-            )}
-          </div>
+            {features.map((feature) => (
+              <div
+                key={feature.step}
+                style={{
+                  width: `${100 / steps}%`,
+                  flexShrink: 0,
+                  position: 'relative',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: '1rem',
+                }}
+              >
+                {/* SVG / 3D model / image visual */}
+                {feature.visual ?? (
+                  feature.image ? (
+                    <Step3DViewer
+                      src={feature.image}
+                      poster={feature.poster}
+                      alt={feature.title}
+                    />
+                  ) : null
+                )}
 
-          <div className="pointer-events-none absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-[#eef4f8] via-[#eef4f8]/40 to-transparent p-5 md:p-7">
-            <p className="text-[11px] font-semibold tracking-[0.18em] text-[#0ea5d9] uppercase">
-              {active.step}
-            </p>
-            <p className="mt-1 text-lg font-bold text-[#0b2a3d] md:text-xl">{active.title}</p>
+                {/* Step label overlay at the bottom */}
+                <div
+                  style={{
+                    pointerEvents: 'none',
+                    position: 'absolute',
+                    inset: 0,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'flex-end',
+                    background:
+                      'linear-gradient(to top, #2b2a2a 0%, #343738b3 0%)',
+                    padding: '1.25rem 1.5rem',
+                  }}
+                >
+                  <p
+                    style={{
+                      fontSize: '11px',
+                      fontWeight: 600,
+                      letterSpacing: '0.18em',
+                      color: '#0ea5d9',
+                      textTransform: 'uppercase',
+                    }}
+                  >
+                    {feature.step}
+                  </p>
+                  <p
+                    style={{
+                      marginTop: '0.25rem',
+                      fontSize: '1.125rem',
+                      fontWeight: 700,
+                      color: '#ffffff',
+                    }}
+                  >
+                    {feature.title}
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
