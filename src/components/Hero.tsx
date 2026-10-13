@@ -1,6 +1,6 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
-import { ButtonLink } from './ui/button'
 
 export const Hero: React.FC = () => {
   return (
@@ -24,15 +24,16 @@ export const Hero: React.FC = () => {
         </p>
 
         <div className="animate-slide-in-left-delay-2 mt-10 flex flex-col items-stretch gap-3 sm:mt-12 sm:flex-row sm:items-center sm:gap-4">
-          <ButtonLink href="#contact" size="lg" className="w-full sm:w-auto">
+          <Link
+            to="/contact"
+            className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 px-6 py-3.5 text-sm font-bold text-[#03131b] shadow-[0_0_20px_rgba(14,165,217,0.45)] transition duration-300 ease-out hover:scale-105 active:scale-95 sm:w-auto sm:px-8 sm:py-4 sm:text-base"
+          >
             Talk to us
-          </ButtonLink>
+          </Link>
 
-          <ButtonLink
-            href="#solutions"
-            variant="secondary"
-            size="lg"
-            className="group w-full text-white sm:w-auto"
+          <Link
+            to="/solutions"
+            className="group inline-flex w-full items-center justify-center gap-2 rounded-full border border-current/25 px-6 py-3.5 text-sm font-semibold text-white transition duration-300 ease-out hover:border-[#0ea5d9] hover:text-[#0ea5d9] active:scale-95 sm:w-auto sm:px-8 sm:py-4 sm:text-base"
           >
             Explore solutions
             <ArrowRight
@@ -40,7 +41,7 @@ export const Hero: React.FC = () => {
               strokeWidth={2.5}
               className="transition-transform duration-300 group-hover:translate-x-1"
             />
-          </ButtonLink>
+          </Link>
         </div>
       </div>
     </section>

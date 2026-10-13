@@ -89,7 +89,7 @@ export function FeatureSteps({
                 type="button"
                 onClick={() => select(index)}
                 aria-current={isActive ? true : undefined}
-                className="group flex w-full items-start gap-4 rounded-2xl border border-transparent p-3 text-left transition-colors duration-500 hover:border-[#d9e5ee] hover:bg-white/70 focus-visible:border-[#0ea5d9] focus-visible:outline-none md:gap-5 md:p-4 cursor-pointer"
+                className="group flex w-full items-start gap-4 rounded-2xl border border-transparent p-3 text-left transition-colors duration-500 hover:border-[#d9e5ee] hover:bg-white/70 focus-visible:border-[#0ea5d9] focus-visible:outline-none md:gap-5 md:p-4"
               >
                 <span
                   className={cn(
@@ -126,11 +126,11 @@ export function FeatureSteps({
         {/* Sliding visual panel — right column */}
         <div
           className={cn(
-            'relative order-1 overflow-hidden rounded-3xl border border-[#1e2a30] md:order-2',
+            'relative order-1 overflow-hidden rounded-3xl border border-[#d9e5ee] md:order-2',
             imageHeight
           )}
           style={{
-            background: '#b1bfc7',
+            background: 'linear-gradient(140deg, #f7fafc 0%, #e6eff6 100%)',
           }}
         >
           {/*
@@ -158,16 +158,17 @@ export function FeatureSteps({
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  padding: '1rem',
+                  padding: '1.5rem',
                 }}
               >
-                {/* SVG / 3D model / image visual */}
+                {/* 3D / image visual */}
                 {feature.visual ?? (
                   feature.image ? (
                     <Step3DViewer
                       src={feature.image}
                       poster={feature.poster}
-                      alt={feature.title}
+                      alt={feature.step}
+                      className="w-full h-full"
                     />
                   ) : null
                 )}
@@ -182,7 +183,7 @@ export function FeatureSteps({
                     flexDirection: 'column',
                     justifyContent: 'flex-end',
                     background:
-                      'linear-gradient(to top, #2b2a2a 0%, #343738b3 0%)',
+                      'linear-gradient(to top, #eef4f8 0%, rgba(238,244,248,0.4) 50%, transparent 100%)',
                     padding: '1.25rem 1.5rem',
                   }}
                 >
@@ -202,7 +203,7 @@ export function FeatureSteps({
                       marginTop: '0.25rem',
                       fontSize: '1.125rem',
                       fontWeight: 700,
-                      color: '#ffffff',
+                      color: '#0b2a3d',
                     }}
                   >
                     {feature.title}

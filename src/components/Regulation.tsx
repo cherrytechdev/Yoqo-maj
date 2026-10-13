@@ -56,7 +56,33 @@ export const Regulation: React.FC = () => {
           ))}
         </div>
 
-        <Reveal direction="up" delay={0.35}>
+        <div className="mt-10 border-t border-[#d3e0ea]" />
+
+        {/* Memberships */}
+        <div className="mt-8 grid md:grid-cols-2">
+          {[
+            { label: 'Principal Member', title: 'UnionPay International' },
+            { label: 'Payment Facilitator', title: 'Visa, Mastercard and JCB' },
+          ].map((m, i) => (
+            <Reveal key={m.label} direction="up" delay={0.35 + i * 0.15}>
+              <div
+                className={`group relative cursor-default rounded-2xl px-4 py-8 transition-all duration-500 ease-out hover:-translate-y-1.5 hover:bg-white hover:shadow-[0_18px_40px_rgba(14,165,217,0.18)] sm:px-6 ${
+                  i === 1 ? 'md:ml-6 md:border-l md:border-[#d3e0ea] md:pl-10' : 'md:mr-6'
+                }`}
+              >
+                <p className="text-xs font-bold uppercase tracking-wide text-[#0a86ad] transition-all duration-500 group-hover:translate-x-2 group-hover:tracking-[0.2em]">
+                  {m.label}
+                </p>
+                <h3 className="mt-8 max-w-sm text-2xl sm:text-3xl font-bold leading-tight tracking-tight text-[#082a40] transition-all duration-500 group-hover:translate-x-2 group-hover:text-[#0a86ad]">
+                  {m.title}
+                </h3>
+                <span className="mt-6 block h-1 w-full max-w-[120px] origin-left scale-x-0 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 transition-transform duration-500 ease-out group-hover:scale-x-100" />
+              </div>
+            </Reveal>
+          ))}
+        </div>
+
+        <Reveal direction="up" delay={0.55}>
           <p className="mt-10 max-w-4xl text-sm sm:text-base leading-relaxed text-[#5d7284]">
             Services depend on the relevant licence conditions, partner approvals and contractual
             arrangements. A financial-services licence does not imply a banking or custody licence.

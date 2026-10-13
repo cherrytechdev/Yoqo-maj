@@ -1,25 +1,25 @@
 import React from 'react'
-import { Mail } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { Mail, Phone } from 'lucide-react'
 import { ButtonLink } from './ui/button'
 
-const EMAIL = 'meithilesh.ramautar@yoqo.io'
+const EMAILS = ['meithilesh.ramautar@yoqo.io', 'bhovin@yoqo.io']
+const PHONE_DISPLAY = '+230 55 15 50 20'
+const PHONE_HREF = 'tel:+23055155020'
 
 const navLinks = [
-  { label: 'Home', url: '#home' },
-  { label: 'About', url: '#about' },
-  { label: 'Solutions', url: '#solutions' },
-  { label: 'Operations', url: '#operations' },
-  { label: 'Security', url: '#security' },
-  { label: 'Cards', url: '#cards' },
-  { label: 'Regulation', url: '#regulation' },
-  { label: 'Contact', url: '#contact' },
+  { label: 'Home',      path: '/'          },
+  { label: 'Solutions', path: '/solutions' },
+  { label: 'Platform',  path: '/platform'  },
+  { label: 'Security',  path: '/security'  },
+  { label: 'Contact',   path: '/contact'   },
 ]
 
 export const Footer: React.FC = () => {
   return (
     <footer
       className="relative w-full overflow-hidden border-t border-white/10 px-6 pb-24 pt-16 sm:px-12 sm:pb-20 md:px-20 lg:px-28"
-      style={{ background: '#03111a' }}
+      style={{ background: '#061925' }}
     >
       <div className="mx-auto max-w-6xl">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
@@ -28,27 +28,27 @@ export const Footer: React.FC = () => {
             <img
               src="/Yoqo-icon.png"
               alt="YOQO"
-              className="h-10 w-auto select-none"
+              className="h-16 w-auto select-none"
               draggable={false}
             />
             <p className="mt-4 text-sm leading-relaxed text-white/60">
               YOQO Payment Systems Ltd. Mauritius.
             </p>
-            <p className="mt-2 text-sm text-white/40">English, French, and Hindi</p>
+            <p className="mt-2 text-sm text-white/40">English, French</p>
           </div>
 
           {/* Navigation */}
           <nav aria-label="Footer">
             <p className="text-xs font-bold tracking-[0.18em] text-cyan-300 uppercase">Navigate</p>
-            <ul className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2 sm:grid-cols-1">
+            <ul className="mt-4 space-y-2">
               {navLinks.map((link) => (
-                <li key={link.url}>
-                  <a
-                    href={link.url}
+                <li key={link.path}>
+                  <Link
+                    to={link.path}
                     className="text-sm text-white/70 transition-colors duration-300 hover:text-cyan-300"
                   >
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -58,13 +58,24 @@ export const Footer: React.FC = () => {
           <div>
             <p className="text-xs font-bold tracking-[0.18em] text-cyan-300 uppercase">Contact</p>
             <ul className="mt-4 space-y-2 text-sm text-white/70">
+              {EMAILS.map((email) => (
+                <li key={email}>
+                  <a
+                    href={`mailto:${email}`}
+                    className="inline-flex items-center gap-2 break-all transition-colors duration-300 hover:text-cyan-300"
+                  >
+                    <Mail size={16} className="shrink-0 text-cyan-400" aria-hidden="true" />
+                    {email}
+                  </a>
+                </li>
+              ))}
               <li>
                 <a
-                  href={`mailto:${EMAIL}`}
-                  className="inline-flex items-center gap-2 break-all transition-colors duration-300 hover:text-cyan-300"
+                  href={PHONE_HREF}
+                  className="inline-flex items-center gap-2 transition-colors duration-300 hover:text-cyan-300"
                 >
-                  <Mail size={16} className="shrink-0 text-cyan-400" aria-hidden="true" />
-                  {EMAIL}
+                  <Phone size={16} className="shrink-0 text-cyan-400" aria-hidden="true" />
+                  {PHONE_DISPLAY}
                 </a>
               </li>
               <li>
@@ -77,12 +88,12 @@ export const Footer: React.FC = () => {
               </li>
             </ul>
 
-            <ButtonLink href={`mailto:${EMAIL}`} size="md" className="mt-6">
+            <ButtonLink href={`mailto:${EMAILS[0]}`} size="md" className="mt-6">
               Talk to us
             </ButtonLink>
           </div>
 
-          {/* Ce que fait YOQO */}
+          {/* Solutions */}
           <div>
             <p className="text-xs font-bold tracking-[0.18em] text-cyan-300 uppercase">Solutions</p>
             <ul className="mt-4 space-y-2 text-sm text-white/70">

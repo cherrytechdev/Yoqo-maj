@@ -74,28 +74,24 @@ const flow: Feature[] = [
     title: 'Merchant checkout',
     content: 'Your customer pays by card on your website, app or platform.',
     image: '/3D/step1/model.glb',
-    poster: '/images/steps/step1.png',
   },
   {
     step: 'Step 02',
     title: 'YOQO gateway',
     content: 'Routing, fraud screening and transaction controls in one integration.',
     image: '/3D/step2/model.glb',
-    poster: '/images/steps/step2.png',
   },
   {
     step: 'Step 03',
     title: 'Acquirer and card network',
     content: 'The acquiring bank forwards the request to Visa or Mastercard.',
     image: '/3D/step3/model.glb',
-    poster: '/images/steps/step3.png',
   },
   {
     step: 'Step 04',
     title: 'Card issuer',
     content: 'The issuing bank approves or declines the transaction in real time.',
     image: '/3D/step4/model.glb',
-    poster: '/images/steps/step4.png',
   },
 ]
 
@@ -122,7 +118,7 @@ const TiltCard: React.FC<{ c: Capability }> = ({ c }) => {
       onMouseLeave={handleLeave}
       className="group relative flex min-h-[340px] flex-col justify-between overflow-hidden rounded-3xl border border-white/10 p-8 text-white shadow-[0_10px_30px_rgba(11,42,61,0.25)] transition-[transform,box-shadow] duration-300 ease-out hover:shadow-[0_24px_50px_rgba(11,42,61,0.4)]"
       style={{
-        background: 'linear-gradient(135deg, #3a4556 0%, #1a2130 40%, #161b2b 100%)',
+        background: 'linear-gradient(135deg, #303741 0%, #19243a 40%, #161b2b 100%)',
       }}
     >
       {/* Dégradé de couleur qui apparaît au survol */}
