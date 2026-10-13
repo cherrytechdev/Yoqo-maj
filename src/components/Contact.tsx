@@ -1,13 +1,17 @@
 import React, { useRef, useState } from 'react'
 import { Reveal } from '../animations/Reveal'
 
-const EMAIL = 'meithilesh.ramautar@yoqo.io'
+const EMAIL_1 = 'meithilesh.ramautar@yoqo.io'
+const EMAIL_2 = 'bhovin@yoqo.io'
+const PHONE   = '+230 55 15 50 20'
 
 const infos = [
-  { label: 'Email', value: EMAIL, href: `mailto:${EMAIL}` },
-  { label: 'Website', value: 'yoqo.io', href: 'https://yoqo.io' },
-  { label: 'Based in', value: 'Mauritius' },
-  { label: 'Languages', value: 'English, French, and Hindi' }, 
+  { label: 'Email',     value: EMAIL_1, href: `mailto:${EMAIL_1}` },
+  { label: 'Email',     value: EMAIL_2, href: `mailto:${EMAIL_2}` },
+  { label: 'Phone',     value: PHONE,   href: `tel:${PHONE.replace(/\s/g, '')}` },
+  { label: 'Website',   value: 'yoqo.io', href: 'https://yoqo.io' },
+  { label: 'Based in',  value: 'Mauritius' },
+  { label: 'Languages', value: 'English, French' },
 ]
 
 /* ---------- Carte d'infos : inclinaison 3D + lumière qui suit la souris ---------- */
@@ -73,7 +77,7 @@ const InfoCard: React.FC = () => {
             )
 
             return (
-              <div key={info.label} className="group relative">
+              <div key={i} className="group relative">
                 {info.href ? (
                   <a href={info.href} className="block py-4">
                     {content}
@@ -151,34 +155,7 @@ export const Contact: React.FC = () => {
             </p>
           </Reveal>
 
-          <Reveal direction="left" delay={0.25}>
-            <div className="mt-8">
-              <a
-                href={`mailto:${EMAIL}`}
-                className="group relative inline-flex overflow-hidden rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 max-w-full px-5 py-3.5 text-sm font-bold sm:px-8 sm:py-4 sm:text-base text-[#03131b] transition-transform duration-200 hover:scale-105 hover:-translate-y-0.5 active:scale-95"
-              >
-                {/* Halo qui pulse */}
-                <span
-                  aria-hidden
-                  className="absolute inset-0 rounded-full shadow-[0_0_30px_rgba(14,165,217,0.7)]"
-                  style={{ animation: 'pulseGlow 2.4s ease-in-out infinite' }}
-                />
-                {/* Reflet qui traverse le bouton */}
-                <span className="absolute inset-y-0 -left-full w-1/2 -skew-x-12 bg-white/40 blur-sm transition-transform duration-700 ease-out group-hover:translate-x-[400%]" />
-                <span className="relative break-all">{EMAIL}</span>
-              </a>
-            </div>
-
-            <a
-              href="https://yoqo.io"
-              className="group mt-8 inline-block text-sm font-bold text-white"
-            >
-              <span className="relative">
-                yoqo.io
-                <span className="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-cyan-300 transition-transform duration-300 group-hover:scale-x-100" />
-              </span>
-            </a>
-          </Reveal>
+          
         </div>
 
         {/* Colonne droite */}

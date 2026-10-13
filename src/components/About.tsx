@@ -3,7 +3,7 @@ import { Reveal } from '../animations/Reveal'
 
 const details = [
   { label: 'Technical delivery', value: 'Practical operational experience' },
-  { label: 'Languages', value: 'English, French and Hindi' },
+  { label: 'Languages', value: 'English, French' },
 ]
 
 export const About: React.FC = () => {
