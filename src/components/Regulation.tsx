@@ -32,25 +32,22 @@ export const Regulation: React.FC = () => {
 
         <div className="mt-10 border-t border-[#d3e0ea]" />
 
-        {/* Les deux grandes cases animées */}
+        {/* Licences */}
         <div className="mt-8 grid md:grid-cols-2">
           {licences.map((l, i) => (
             <Reveal key={l.title} direction="up" delay={0.2 + i * 0.15}>
               <div
-                className={`group relative cursor-default rounded-2xl px-4 py-8 transition-all duration-500 ease-out hover:-translate-y-1.5 hover:bg-white hover:shadow-[0_18px_40px_rgba(14,165,217,0.18)] sm:px-6 ${
+                className={`relative px-4 py-8 sm:px-6 ${
                   i === 1 ? 'md:ml-6 md:border-l md:border-[#d3e0ea] md:pl-10' : 'md:mr-6'
                 }`}
               >
-                <p className="text-xs font-bold uppercase tracking-wide text-[#0a86ad] transition-all duration-500 group-hover:translate-x-2 group-hover:tracking-[0.2em]">
+                <p className="text-xs font-bold uppercase tracking-wide text-[#0a86ad]">
                   {l.label}
                 </p>
 
-                <h3 className="mt-8 max-w-sm text-2xl sm:text-3xl font-bold leading-tight tracking-tight text-[#082a40] transition-all duration-500 group-hover:translate-x-2 group-hover:text-[#0a86ad]">
+                <h3 className="mt-8 max-w-sm text-2xl sm:text-3xl font-bold leading-tight tracking-tight text-[#082a40]">
                   {l.title}
                 </h3>
-
-                {/* Barre cyan qui se dessine au survol */}
-                <span className="mt-6 block h-1 w-full max-w-[120px] origin-left scale-x-0 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 transition-transform duration-500 ease-out group-hover:scale-x-100" />
               </div>
             </Reveal>
           ))}
@@ -66,17 +63,16 @@ export const Regulation: React.FC = () => {
           ].map((m, i) => (
             <Reveal key={m.label} direction="up" delay={0.35 + i * 0.15}>
               <div
-                className={`group relative cursor-default rounded-2xl px-4 py-8 transition-all duration-500 ease-out hover:-translate-y-1.5 hover:bg-white hover:shadow-[0_18px_40px_rgba(14,165,217,0.18)] sm:px-6 ${
+                className={`relative px-4 py-8 sm:px-6 ${
                   i === 1 ? 'md:ml-6 md:border-l md:border-[#d3e0ea] md:pl-10' : 'md:mr-6'
                 }`}
               >
-                <p className="text-xs font-bold uppercase tracking-wide text-[#0a86ad] transition-all duration-500 group-hover:translate-x-2 group-hover:tracking-[0.2em]">
+                <p className="text-xs font-bold uppercase tracking-wide text-[#0a86ad]">
                   {m.label}
                 </p>
-                <h3 className="mt-8 max-w-sm text-2xl sm:text-3xl font-bold leading-tight tracking-tight text-[#082a40] transition-all duration-500 group-hover:translate-x-2 group-hover:text-[#0a86ad]">
+                <h3 className="mt-8 max-w-sm text-2xl sm:text-3xl font-bold leading-tight tracking-tight text-[#082a40]">
                   {m.title}
                 </h3>
-                <span className="mt-6 block h-1 w-full max-w-[120px] origin-left scale-x-0 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 transition-transform duration-500 ease-out group-hover:scale-x-100" />
               </div>
             </Reveal>
           ))}

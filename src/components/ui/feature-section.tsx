@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Check } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { Step3DViewer } from './Step3DViewer'
+import { StepModel3D } from './StepModel3D'
 
 export interface Feature {
   step: string
@@ -16,7 +16,6 @@ export interface FeatureStepsProps {
   features: Feature[]
   className?: string
   autoPlayInterval?: number
-  imageHeight?: string
 }
 
 const TICK_MS = 100
@@ -25,7 +24,6 @@ export function FeatureSteps({
   features,
   className,
   autoPlayInterval = 3000,
-  imageHeight = 'h-[200px] md:h-[300px] lg:h-[400px]',
 }: FeatureStepsProps) {
   const [currentFeature, setCurrentFeature] = useState(0)
   const [progress, setProgress] = useState(0)
@@ -78,7 +76,7 @@ export function FeatureSteps({
 
       <div className="flex flex-col gap-6 md:grid md:grid-cols-2 md:items-center md:gap-10">
         {/* Steps list — left column */}
-        <div className="order-2 space-y-4 md:order-1">
+        <div className="space-y-4">
           {features.map((feature, index) => {
             const isActive = index === currentFeature
             const isDone = index < currentFeature
@@ -123,96 +121,11 @@ export function FeatureSteps({
           })}
         </div>
 
-        {/* Sliding visual panel — right column */}
-        <div
-          className={cn(
-            'relative order-1 overflow-hidden rounded-3xl border border-[#d9e5ee] md:order-2',
-            imageHeight
-          )}
-          style={{
-            background: 'linear-gradient(140deg, #f7fafc 0%, #e6eff6 100%)',
-          }}
-        >
-          {/*
-           * The strip is `steps` times wider than the container.
-           * Translating it by -(currentFeature / steps * 100)% reveals the active slide.
-           */}
-          <div
-            style={{
-              display: 'flex',
-              width: `${steps * 100}%`,
-              height: '100%',
-              transform: `translateX(${-(currentFeature * (100 / steps))}%)`,
-              transition: reduce
-                ? 'none'
-                : 'transform 0.55s cubic-bezier(0.45, 0, 0.15, 1)',
-            }}
-          >
-            {features.map((feature) => (
-              <div
-                key={feature.step}
-                style={{
-                  width: `${100 / steps}%`,
-                  flexShrink: 0,
-                  position: 'relative',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  padding: '1.5rem',
-                }}
-              >
-                {/* 3D / image visual */}
-                {feature.visual ?? (
-                  feature.image ? (
-                    <Step3DViewer
-                      src={feature.image}
-                      poster={feature.poster}
-                      alt={feature.step}
-                      className="w-full h-full"
-                    />
-                  ) : null
-                )}
-
-                {/* Step label overlay at the bottom */}
-                <div
-                  style={{
-                    pointerEvents: 'none',
-                    position: 'absolute',
-                    inset: 0,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'flex-end',
-                    background:
-                      'linear-gradient(to top, #eef4f8 0%, rgba(238,244,248,0.4) 50%, transparent 100%)',
-                    padding: '1.25rem 1.5rem',
-                  }}
-                >
-                  <p
-                    style={{
-                      fontSize: '11px',
-                      fontWeight: 600,
-                      letterSpacing: '0.18em',
-                      color: '#0ea5d9',
-                      textTransform: 'uppercase',
-                    }}
-                  >
-                    {feature.step}
-                  </p>
-                  <p
-                    style={{
-                      marginTop: '0.25rem',
-                      fontSize: '1.125rem',
-                      fontWeight: 700,
-                      color: '#0b2a3d',
-                    }}
-                  >
-                    {feature.title}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        {/* 3D visual panel — right column */}
+        <StepModel3D
+          activeStep={currentFeature + 1}
+          steps={features.map((feature) => ({ step: feature.step, title: feature.title }))}
+        />
       </div>
     </div>
   )

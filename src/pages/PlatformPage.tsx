@@ -6,7 +6,7 @@ import { Launch } from '../components/Launch'
 
 export const PlatformPage: React.FC = () => {
   return (
-    <div className="pt-[72px] sm:pt-[84px]">
+    <div>
       <PageHero
         titlePrefix="YOQO"
         titleHighlight="Platform"

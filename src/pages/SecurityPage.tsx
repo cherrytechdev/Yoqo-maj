@@ -5,7 +5,7 @@ import { Regulation } from '../components/Regulation'
 
 export const SecurityPage: React.FC = () => {
   return (
-    <div className="pt-[72px] sm:pt-[84px]">
+    <div>
       <PageHero
         titlePrefix="Security &"
         titleHighlight="Compliance"
