@@ -3,7 +3,7 @@ import { Contact } from '../components/Contact'
 
 export const ContactPage: React.FC = () => {
   return (
-    <div className="pt-[72px] sm:pt-[84px]">
+    <div>
       <Contact />
     </div>
   )

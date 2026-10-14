@@ -34,7 +34,7 @@ export const Security: React.FC = () => {
       className="relative w-full overflow-hidden px-6 sm:px-12 md:px-20 lg:px-28 py-20 sm:py-28 scroll-mt-28"
       style={{
         background:
-          'radial-gradient(ellipse 35% 40% at 0% 8%, rgba(186, 225, 245, 0.55) 0%, transparent 70%), linear-gradient(180deg, #eef5fb 0%, #e2edf5 100%)',
+          'linear-gradient(180deg, #eef5fb 0%, #e2edf5 100%)',
       }}
     >
       <div className="mx-auto max-w-6xl">

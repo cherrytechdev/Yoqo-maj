@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
 import { Reveal } from '../animations/Reveal'
@@ -8,7 +8,6 @@ type Capability = {
   title: string
   subtitle: string
   text: string
-  hoverGradient: string
   icon: React.ReactNode
 }
 
@@ -29,7 +28,6 @@ const capabilities: Capability[] = [
     title: 'Accept',
     subtitle: 'Payment gateway',
     text: 'Online card acceptance, branded checkout and merchant integration.',
-    hoverGradient: 'linear-gradient(135deg, #2563eb 0%, #5b7be0 50%, #1e40af 100%)',
     icon: (
       <svg {...iconProps}>
         <rect x="2" y="5" width="20" height="14" rx="2" />
@@ -42,7 +40,6 @@ const capabilities: Capability[] = [
     title: 'Issue',
     subtitle: 'Prepaid card programs',
     text: 'Physical and virtual cards with configurable spending controls.',
-    hoverGradient: 'linear-gradient(135deg, #0e8fb0 0%, #0a6f8c 50%, #075a73 100%)',
     icon: (
       <svg {...iconProps}>
         <rect x="2" y="5" width="20" height="14" rx="2" />
@@ -57,7 +54,6 @@ const capabilities: Capability[] = [
     title: 'Connect',
     subtitle: 'Virtual assets',
     text: 'A regulated capability supporting the development of stablecoin payment flows.',
-    hoverGradient: 'linear-gradient(135deg, #4f46e5 0%, #4338ca 50%, #312e81 100%)',
     icon: (
       <svg {...iconProps}>
         <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
@@ -67,55 +63,22 @@ const capabilities: Capability[] = [
   },
 ]
 
-const TiltCard: React.FC<{ c: Capability }> = ({ c }) => {
-  const ref = useRef<HTMLElement>(null)
+const CapabilityCard: React.FC<{ c: Capability }> = ({ c }) => (
+  <article
+    className="flex h-full min-h-[300px] flex-col justify-between rounded-2xl border border-white/10 bg-[#0f1c2b] p-8 text-white transition-[transform,border-color,box-shadow] duration-300 ease-out hover:-translate-y-1 hover:border-cyan-400/50 hover:shadow-[0_20px_40px_rgba(11,42,61,0.35)]"
+  >
+    <div className="flex items-start justify-between">
+      <span className="text-cyan-300">{c.icon}</span>
+      <span className="text-xs font-semibold tracking-widest text-white/60">{c.number}</span>
+    </div>
 
-  const handleMove = (e: React.MouseEvent<HTMLElement>) => {
-    const el = ref.current
-    if (!el) return
-    const r = el.getBoundingClientRect()
-    const x = (e.clientX - r.left) / r.width - 0.5
-    const y = (e.clientY - r.top) / r.height - 0.5
-    el.style.transform = `perspective(900px) rotateX(${-y * 10}deg) rotateY(${x * 10}deg) translateY(-6px)`
-  }
-
-  const handleLeave = () => {
-    if (ref.current) ref.current.style.transform = ''
-  }
-
-  return (
-    <article
-      ref={ref}
-      onMouseMove={handleMove}
-      onMouseLeave={handleLeave}
-      className="group relative flex min-h-[340px] flex-col justify-between overflow-hidden rounded-3xl border border-white/10 p-8 text-white shadow-[0_10px_30px_rgba(11,42,61,0.25)] transition-[transform,box-shadow] duration-300 ease-out hover:shadow-[0_24px_50px_rgba(11,42,61,0.4)]"
-      style={{
-        background: 'linear-gradient(135deg, #3a4556 0%, #1a2130 40%, #161b2b 100%)',
-      }}
-    >
-      <div
-        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-        style={{ background: c.hoverGradient }}
-      />
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(120deg,transparent_30%,rgba(255,255,255,0.12)_50%,transparent_70%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-
-      <div className="relative z-10 flex items-start justify-between">
-        {c.icon}
-        <span className="text-xs font-semibold tracking-widest text-white/60">{c.number}</span>
-      </div>
-
-      <div className="relative z-10">
-        <h3 className="text-3xl font-bold tracking-tight">{c.title}</h3>
-        <p className="mt-2 text-base font-semibold text-cyan-300 transition-colors duration-500 group-hover:text-white">
-          {c.subtitle}
-        </p>
-        <p className="mt-3 text-[15px] leading-relaxed text-white/70 group-hover:text-white/90">
-          {c.text}
-        </p>
-      </div>
-    </article>
-  )
-}
+    <div>
+      <h3 className="text-3xl font-bold tracking-tight">{c.title}</h3>
+      <p className="mt-2 text-base font-semibold text-cyan-300">{c.subtitle}</p>
+      <p className="mt-3 text-[15px] leading-relaxed text-white/75">{c.text}</p>
+    </div>
+  </article>
+)
 
 export const SolutionsPreview: React.FC = () => {
   return (
@@ -135,8 +98,8 @@ export const SolutionsPreview: React.FC = () => {
 
         <div className="mt-12 grid gap-6 md:grid-cols-3">
           {capabilities.map((c, index) => (
-            <Reveal key={c.number} direction="up" delay={index * 0.15}>
-              <TiltCard c={c} />
+            <Reveal key={c.number} direction="up" delay={index * 0.1} className="h-full">
+              <CapabilityCard c={c} />
             </Reveal>
           ))}
         </div>

@@ -92,7 +92,7 @@ export const Operations: React.FC = () => {
       className="relative w-full overflow-hidden px-6 sm:px-12 md:px-20 lg:px-28 py-20 sm:py-28 scroll-mt-28"
       style={{
         background:
-          'radial-gradient(ellipse 40% 50% at 0% 0%, rgba(186, 225, 245, 0.35) 0%, transparent 70%), radial-gradient(ellipse 40% 50% at 85% 100%, rgba(186, 225, 240, 0.45) 0%, transparent 70%), linear-gradient(180deg, #f8fbfd 0%, #eef4f8 100%)',
+          'linear-gradient(180deg, #f8fbfd 0%, #eef4f8 100%)',
       }}
     >
       <div className="mx-auto max-w-6xl">

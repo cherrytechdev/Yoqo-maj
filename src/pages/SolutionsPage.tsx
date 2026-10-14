@@ -6,7 +6,7 @@ import { MobileApp } from '../components/MobileApp'
 
 export const SolutionsPage: React.FC = () => {
   return (
-    <div className="pt-[72px] sm:pt-[84px]">
+    <div>
       <PageHero
         titlePrefix="Our"
         titleHighlight="Solutions"
