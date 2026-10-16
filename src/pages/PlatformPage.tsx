@@ -1,6 +1,7 @@
 import React from 'react'
 import { PageHero } from '../components/PageHero'
 import { Operations } from '../components/Operations'
+import { NetworkCoinsVideoSection } from '../components/NetworkCoinsVideo'
 import { Infrastructure } from '../components/Infrastructure'
 import { Launch } from '../components/Launch'
 
@@ -13,6 +14,7 @@ export const PlatformPage: React.FC = () => {
         description="A robust, scalable infrastructure powering real-time operations, seamless integrations, and rapid deployment — so your business never misses a beat."
       />
       <Operations />
+      <NetworkCoinsVideoSection />
       <Infrastructure />
       <Launch />
     </div>
